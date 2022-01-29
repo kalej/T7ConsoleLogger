@@ -29,5 +29,5 @@ Disadvantages of the current solution:
 
 Future improvements:
  - [ ] Get security access to define variables by address.
- - [ ] Support variables that are arrays (e.g. ignition offsets and others).
+ - [x] Support variables that are arrays (e.g. ignition offsets and others).
  - [ ] ~~User-friendly interface~~

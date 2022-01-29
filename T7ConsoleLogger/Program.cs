@@ -31,6 +31,7 @@ namespace T7ConsoleLogger
             Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs cancelArgs)
             {
                 cts.Cancel();
+                cancelArgs.Cancel = true;
             };
 
             try
@@ -90,6 +91,7 @@ namespace T7ConsoleLogger
                 kwpThread.Start();
                 
                 kwpThread.Join();
+                sqliteThread.Join();
 
                 if (!cts.IsCancellationRequested)
                     cts.Cancel();
@@ -147,6 +149,8 @@ namespace T7ConsoleLogger
                 int sleep = logConfig.PeriodMs - delta;
                 Thread.Sleep(sleep > 0 ? sleep : 0);
             }
+
+            Inform("KWP thread finished");
         }
 
         private static void SQLiteThread(LogConfig config, ConcurrentQueue<LogEntryData> dataQueue, CancellationToken ct)
@@ -165,6 +169,8 @@ namespace T7ConsoleLogger
                 if ((dataQueue.Count == 0) && ct.IsCancellationRequested)
                     break;
             }
+
+            Inform("SQLite thread finished");
         }
 
         public static void Inform(string text)

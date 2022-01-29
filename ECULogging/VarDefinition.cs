@@ -36,7 +36,7 @@ namespace ECULogging
                 }
             }
 
-            int length = Length;
+            int length = ElementLength;
             byte[] tmp = new byte[length];
             Array.Copy(data, offset, tmp, 0, length);
             if (BitConverter.IsLittleEndian)
@@ -68,33 +68,44 @@ namespace ECULogging
             return false;
         }
 
-        public int Length
+        public int ElementLength
         {
             get
             {
-                if (length != 0)
-                    return length;
+                if (elementLength != 0)
+                    return elementLength;
 
                 switch (Type)
                 {
                     case "long":
-                        length = 4;
+                        elementLength = 4;
                         break;
                     case "word":
-                        length = 2;
+                        elementLength = 2;
                         break;
                     case "byte":
-                        length = 1;
+                        elementLength = 1;
                         break;
                     default:
                         throw new Exception($"Variable {Name} has undefined type {Type}");
                 }
 
-                return length;
+                return elementLength;
             }
         }
+
+        public int Length
+        {
+            get
+            {
+                return ElementLength * Count;
+            }
+        }
+
         [XmlIgnore]
-        private int length = 0;
+        private int elementLength = 0;
+        [XmlIgnore]
+        private int count = 1;
 
         [XmlAttribute("name")]
         public string Name;
@@ -102,6 +113,18 @@ namespace ECULogging
         public string Type;
         [XmlAttribute("signed")]
         public bool Signed;
+        [XmlAttribute("count")]
+        public int Count
+        {
+            get
+            {
+                return count;
+            }
+            set
+            {
+                count = (value == 0) ? 1 : value;
+            }
+        }
         [XmlAttribute("method")]
         public string Method;
 

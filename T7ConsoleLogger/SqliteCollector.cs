@@ -32,7 +32,17 @@ namespace T7ConsoleLogger
                 sb.Append("create table session (id integer not null primary key autoincrement, timestamp text, ");
                 foreach(VarDefinition varDef in config.VarDefinitions)
                 {
-                    sb.Append($"\"{varDef.Name}\" int,");
+                    if (varDef.Count == 1)
+                    {
+                        sb.Append($"\"{varDef.Name}\" int,");
+                    }
+                    else
+                    {
+                        for(int i = 0; i < varDef.Count; i++)
+                        {
+                            sb.Append($"\"{varDef.Name}_{i}\" int,");
+                        }
+                    }
                 }
                 sb.Remove(sb.Length - 1, 1);
                 sb.Append(")");
@@ -48,8 +58,19 @@ namespace T7ConsoleLogger
             int i = 0;
             foreach(VarDefinition varDef in config.VarDefinitions)
             {
-                insertSQL.Parameters.Add(new SQLiteParameter($"p{i++}" , varDef.FromBytes(data, offset)));
-                offset += varDef.Length;
+                if (varDef.Count == 1)
+                {
+                    insertSQL.Parameters.Add(new SQLiteParameter($"p{i++}", varDef.FromBytes(data, offset)));
+                    offset += varDef.ElementLength;
+                }
+                else
+                {
+                    for(int j = 0; j < varDef.Count; j++)
+                    {
+                        insertSQL.Parameters.Add(new SQLiteParameter($"p{i++}_{j}", varDef.FromBytes(data, offset)));
+                        offset += varDef.ElementLength;
+                    }
+                }
             }
             
             try
@@ -73,7 +94,17 @@ namespace T7ConsoleLogger
                 sb.Append("insert into session (timestamp, ");
                 foreach (VarDefinition varDef in config.VarDefinitions)
                 {
-                    sb.Append($"\"{varDef.Name}\",");
+                    if (varDef.Count == 1)
+                    {
+                        sb.Append($"\"{varDef.Name}\",");
+                    }
+                    else
+                    {
+                        for(int j = 0; j < varDef.Count; j++)
+                        {
+                            sb.Append($"\"{varDef.Name}_{j}\",");
+                        }
+                    }
                 }
                 sb.Remove(sb.Length - 1, 1);
                 sb.Append(") values (@t,");
@@ -81,7 +112,17 @@ namespace T7ConsoleLogger
                 int i = 0;
                 foreach (VarDefinition varDef in config.VarDefinitions)
                 {
-                    sb.Append($"@p{i++},");
+                    if (varDef.Count == 1)
+                    {
+                        sb.Append($"@p{i++},");
+                    }
+                    else
+                    {
+                        for(int j = 0; j < varDef.Count; j++)
+                        {
+                            sb.Append($"@p{i++}_{j},");
+                        }
+                    }
                 }
                 sb.Remove(sb.Length - 1, 1);
                 sb.Append(")");
