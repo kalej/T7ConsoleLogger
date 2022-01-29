@@ -115,6 +115,8 @@ namespace T7ConsoleLogger
                 }
 
                 Inform("Finished");
+
+                Environment.Exit(0);
             }
         }
 
