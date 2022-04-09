@@ -8,9 +8,9 @@
                     (byte)(address >> 16),
                     (byte)(address >> 8),
                     (byte)(address >> 0),
-                    (byte)(length),
+                    (byte)(length)/*,
                     1,
-                    0
+                    0*/
                 }
             ) { }
 

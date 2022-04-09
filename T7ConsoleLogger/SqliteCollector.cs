@@ -10,11 +10,11 @@ namespace T7ConsoleLogger
 {
     public class SqliteCollector
     {
-        public SqliteCollector(LogConfig config)
+        public SqliteCollector(string filename, LogConfig config)
         {
             this.config = config;
 
-            fileName = $"T7CANLog_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.sqlite";
+            fileName = $"{filename}_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.sqlite";
             SQLiteConnection.CreateFile(fileName);
             dbConnection = new SQLiteConnection($"Data Source={fileName};Version=3;");
             dbConnection.Open();

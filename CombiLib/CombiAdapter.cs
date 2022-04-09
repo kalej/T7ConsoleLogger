@@ -17,7 +17,8 @@ namespace CombiLib
     {
         public CombiAdapter()
         {
-            combiUsbDevice = UsbDevice.OpenUsbDevice(new UsbDeviceFinder(0xFFFF, 0x0005));
+            UsbDeviceFinder usbDeviceFinder = new UsbDeviceFinder(0xFFFF, 0x0005);
+            combiUsbDevice = UsbDevice.OpenUsbDevice(device => device.Vid == 0xFFFF && device.Pid == 0x0005);
             if (combiUsbDevice == null) throw new Exception("CombiAdapter Not Found.");
 
             WinUsbDevice winUsbDevice2 = combiUsbDevice as WinUsbDevice;
@@ -159,7 +160,7 @@ namespace CombiLib
             return result;
         }
 
-        private bool SendUsbPacket(CombiUsbPacket request, int writeTimeout = 100, int responseTimeout = 100)
+        private bool SendUsbPacket(CombiUsbPacket request, int writeTimeout = 1000, int responseTimeout = 1000)
         {
             CombiUsbPacket response;
             return SendUsbPacket(request, out response, writeTimeout, responseTimeout);

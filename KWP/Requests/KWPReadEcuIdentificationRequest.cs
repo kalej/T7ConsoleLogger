@@ -6,6 +6,7 @@
 
         public enum EcuIdentification
         {
+            UNIT_NAME = 0x80,
             VIN = 0x90,
             HARDWARE_NUMBER = 0x91,
             IMMOBILIZER_CODE = 0x92,
@@ -15,5 +16,7 @@
         }
         // 90, 92, 93, 94, 95
         public KWPReadEcuIdentificationRequest(EcuIdentification ecuId) : base(new byte[] { (byte)ecuId }) {}
+
+        public KWPReadEcuIdentificationRequest(byte ecuId) : base(new byte[] { ecuId }) { }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -85,7 +86,9 @@ namespace T7ConsoleLogger
 
                 ConcurrentQueue<LogEntryData> queue = new ConcurrentQueue<LogEntryData>();
                 Thread kwpThread = new Thread(() => KWPThread(kwpAdapter, queue, logConfig, cts.Token));
-                Thread sqliteThread = new Thread(() => SQLiteThread(logConfig, queue, cts.Token));
+                kwpThread.Priority = ThreadPriority.Highest;
+
+                Thread sqliteThread = new Thread(() => SQLiteThread(Path.GetFileNameWithoutExtension(args[0]), logConfig, queue, cts.Token));
                 monitor.StartMonitoring();
                 sqliteThread.Start();
                 kwpThread.Start();
@@ -155,9 +158,9 @@ namespace T7ConsoleLogger
             Inform("KWP thread finished");
         }
 
-        private static void SQLiteThread(LogConfig config, ConcurrentQueue<LogEntryData> dataQueue, CancellationToken ct)
+        private static void SQLiteThread(string filename, LogConfig config, ConcurrentQueue<LogEntryData> dataQueue, CancellationToken ct)
         {
-            SqliteCollector collector = new SqliteCollector(config);
+            SqliteCollector collector = new SqliteCollector(filename, config);
             LogEntryData entryData;
             while (true)
             {

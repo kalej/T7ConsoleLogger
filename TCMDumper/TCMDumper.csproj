@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7D001F20-54C7-4EBB-AE88-A2518C72CEAF}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KWP</RootNamespace>
-    <AssemblyName>KWP</AssemblyName>
+    <ProjectGuid>{3272D55C-8D60-4CEE-B6C8-DC03C0E31238}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>TCMDumper</RootNamespace>
+    <AssemblyName>TCMDumper</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,31 +43,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Requests\KWPDynamicallyDefineLocalIdRequest.cs" />
-    <Compile Include="Requests\KWPRequestUpload.cs" />
-    <Compile Include="Requests\KWPTransferData.cs" />
-    <Compile Include="Responses\KWPNegativeResponse.cs" />
-    <Compile Include="Responses\KWPNegativeResponseCode.cs" />
-    <Compile Include="Responses\KWPPositiveResponse.cs" />
-    <Compile Include="Requests\KWPReadDataByLocalIdRequest.cs" />
-    <Compile Include="Requests\KWPReadDynamicallyDefinedDataRequest.cs" />
-    <Compile Include="Requests\KWPReadEcuIdentificationRequest.cs" />
-    <Compile Include="Requests\KWPReadMemoryByAddressRequest.cs" />
-    <Compile Include="KWPRequest.cs" />
-    <Compile Include="KWPResponse.cs" />
-    <Compile Include="Requests\KWPSecurityAccessRequest.cs" />
-    <Compile Include="KWPServiceId.cs" />
-    <Compile Include="Requests\KWPStartCommunicationRequest.cs" />
-    <Compile Include="Requests\KWPTesterPresentRequest.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TCMKWPCANAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Docs\14230-3.pdf" />
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ECULogging\ECULogging.csproj">
-      <Project>{b8ede6b3-fcbd-4575-8d5f-da93b7adec0c}</Project>
-      <Name>ECULogging</Name>
+    <ProjectReference Include="..\CANLib\CANLib.csproj">
+      <Project>{33648b51-1170-4e52-8b8a-606a354bccfa}</Project>
+      <Name>CANLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CombiLib\CombiLib.csproj">
+      <Project>{9871510a-c98d-4bc3-b64f-1000537dfe5c}</Project>
+      <Name>CombiLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KWP\KWPLib.csproj">
+      <Project>{7d001f20-54c7-4ebb-ae88-a2518c72ceaf}</Project>
+      <Name>KWPLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
